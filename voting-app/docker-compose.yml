@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  vote:
+    build: ./vote
+    ports:
+      - "5000:80"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+
+  result:
+    build: ./result
+    ports:
+      - "5001:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+
+  worker:
+    build: ./worker
+    depends_on:
+      - redis
+      - db
+    environment:
+      - REDIS_HOST=redis
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+
+  redis:
+    image: redis:alpine
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: voteuser
+      POSTGRES_PASSWORD: vote123
+      POSTGRES_DB: votedb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
+
+
+
