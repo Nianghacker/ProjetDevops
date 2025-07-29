@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: "${env.GIT_REPO}"
+                git branch: 'main', url: "${env.GIT_REPO}"
             }
         }
         stage('Build Docker Images') {
@@ -51,18 +51,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-    post {
-        success {
-            mail to: "${env.EMAIL_RECIPIENT}",
-                 subject: "Pipeline Jenkins SUCCESS",
-                 body: "Le pipeline s'est exécuté avec succès !"
-        }
-        failure {
-            mail to: "${env.EMAIL_RECIPIENT}",
-                 subject: "Pipeline Jenkins FAILED",
-                 body: "Le pipeline a échoué. Veuillez vérifier les logs Jenkins."
         }
     }
 }
