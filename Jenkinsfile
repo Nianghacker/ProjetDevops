@@ -25,11 +25,13 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                    def services = ['backend', 'frontend']
-                    for (service in services) {
-                        sh "docker push ${REGISTRY}/${service}:latest"
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${REGISTRY_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        def services = ['backend', 'frontend']
+                        for (service in services) {
+                            sh "docker push ${REGISTRY}/${service}:latest"
+                        }
                     }
                 }
             }
