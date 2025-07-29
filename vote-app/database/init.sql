@@ -1,4 +1,0 @@
-CREATE TABLE votes (
-    id SERIAL PRIMARY KEY,
-    option VARCHAR(255) NOT NULL
-);
