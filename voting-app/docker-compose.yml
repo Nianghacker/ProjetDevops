@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-vote
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./certs:/etc/ssl/certs
+    depends_on:
+      - vote
+
   vote:
     build: ./vote
     ports:
@@ -41,8 +53,8 @@ services:
     image: postgres:15
     environment:
       POSTGRES_USER: voteuser
-      POSTGRES_PASSWORD: votedb
-      POSTGRES_DB: vote123
+      POSTGRES_PASSWORD: vote123
+      POSTGRES_DB: votedb
     volumes:
       - pgdata:/var/lib/postgresql/data
 
