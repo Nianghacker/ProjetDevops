@@ -14,7 +14,7 @@ services:
     depends_on:
       - redis
     expose:
-      - "80"  # Expose uniquement en interne, pas de port sur host
+      - "80"  # Expose uniquement en interne
 
   result:
     build: ./result
